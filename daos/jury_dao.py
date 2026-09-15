@@ -1,5 +1,4 @@
 from typing import List
-
 from daos.dao import Dao
 from models.jury import Jury
 
