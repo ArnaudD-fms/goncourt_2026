@@ -26,6 +26,7 @@ class BookDao(Dao[Book]):
                 publisher = Publisher(record["pu_name"])
 
                 book = Book(record["bo_title"], author, publisher)
+                book.id = record["bo_id_book"]
                 book.summary = record["bo_summary"]
                 book.publication_date = record["bo_publication_date"]
                 book.number_of_pages = record["bo_number_of_pages"]

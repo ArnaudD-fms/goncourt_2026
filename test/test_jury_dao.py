@@ -1,6 +1,5 @@
 import unittest
 
-from daos import jury_dao
 from daos.jury_dao import JuryDao
 from models.jury import Jury
 
