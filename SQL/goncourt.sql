@@ -189,4 +189,23 @@ INSERT INTO `go_main_character` (`mc_name`, `mc_id_book`) VALUES
     ("Antoinette Cosway", 8),
     ("Edward Rochester", 8);
 
+INSERT INTO `go_book_selection` (`bs_id_book`, `bs_id_selection`) VALUES
+(1, 1),
+(2, 1),
+(3, 1),
+(4, 1),
+(5, 1),
+(6, 1),
+(7, 1),
+(8, 1),
+(9, 1),
+(10, 1),
+(11, 1),
+(12, 1),
+(13, 1),
+(14, 1),
+(15, 1),
+(16, 1);
+
+
 COMMIT;

@@ -6,6 +6,9 @@ Classe book
 from dataclasses import dataclass, field
 from datetime import date
 
+from models.author import Author
+from models.publisher import Publisher
+
 
 @dataclass
 class Book:
@@ -21,11 +24,13 @@ class Book:
     """
     id: int | None = field(default=None, init=False)
     title: str
-    summary: str
-    publication_date: date
-    number_of_pages: int
-    isbn: str
-    price: float
+    author: Author
+    publisher: Publisher
+    summary: str | None = field(default=None, init=False)
+    publication_date: date | None = field(default=None, init=False)
+    number_of_pages: int | None = field(default=None, init=False)
+    isbn: str | None = field(default=None, init=False)
+    price: float | None = field(default=None, init=False)
 
     def __str__(self):
         # TODO: proposer un affichage en fonction des donnees disponibles
