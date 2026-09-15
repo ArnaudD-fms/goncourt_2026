@@ -11,6 +11,7 @@ from datetime import date
 class Book:
     """
     Classe représentant un livre
+
     * id                : clé primaire de l'entité en base
     * title             : titre du livre
     * summary           : résumé du livre

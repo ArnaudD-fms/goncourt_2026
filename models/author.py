@@ -11,6 +11,7 @@ from models.book import Book
 class Author:
     """
     Classe représenant l'auteur d'un livre
+
     * id            : clé primaire de l'entité en base
     * first_name    : prénom de l'auteur
     * last_name     : nom de l'auteur

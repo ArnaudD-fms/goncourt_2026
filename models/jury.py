@@ -7,11 +7,14 @@ Classe jury
 from dataclasses import dataclass, field
 from datetime import date
 
+from utils.date_utils import date_fr
+
 
 @dataclass
 class Jury:
     """
     Classe répresentant un jury de l'académie Goncourt
+
     * id                : clé primaire de l'entité en base
     * first_name        : prénom du jury
     * last_name         : nom du jury
@@ -25,7 +28,7 @@ class Jury:
     is_president: bool
 
     def __str__(self):
-        s: str = f"{self.first_name} {self.last_name} à rejoint l'Académie Goncourt le {self.joining_date}."
+        s: str = f"{self.first_name} {self.last_name} à rejoint l'Académie Goncourt le {date_fr(self.joining_date)}."
         if self.is_president:
             s += " C'est également le président du jury."
         return s
