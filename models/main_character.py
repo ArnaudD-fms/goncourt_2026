@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 
 
 @dataclass
-class main_character:
+class MainCharacter:
     """
     Classe réprésentant un personnage principal d'un livre
 
