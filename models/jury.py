@@ -28,7 +28,7 @@ class Jury:
     is_president: bool
 
     def __str__(self):
-        s: str = f"{self.first_name} {self.last_name} à rejoint l'Académie Goncourt le {date_fr(self.joining_date)}."
+        s: str = f"{self.first_name} {self.last_name} a rejoint l'Académie Goncourt le {date_fr(self.joining_date)}."
         if self.is_president:
             s += " C'est également le président du jury."
         return s
