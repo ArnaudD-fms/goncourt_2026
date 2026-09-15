@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS `go_book` (
     `bo_number_of_pages` INT DEFAULT NULL,
     `bo_isbn` VARCHAR(20) DEFAULT NULL,
     `bo_price` DECIMAL(10,2) DEFAULT NULL,
+    `bo_number_of_votes` INT DEFAULT 0,
     `bo_id_author` INT NOT NULL,
     `bo_id_publisher` INT NOT NULL,
     PRIMARY KEY (`bo_id_book`)

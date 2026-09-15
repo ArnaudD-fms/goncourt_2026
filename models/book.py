@@ -31,6 +31,7 @@ class Book:
     number_of_pages: int | None = field(default=None, init=False)
     isbn: str | None = field(default=None, init=False)
     price: float | None = field(default=None, init=False)
+    number_of_votes: int | None = field(default=None, init=False)
 
     def __str__(self):
         s = f"\"{self.title}\" a été écrit pas {self.author} et publié par {self.publisher}"
