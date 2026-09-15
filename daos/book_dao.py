@@ -10,40 +10,44 @@ from models.publisher import Publisher
 
 class BookDao(Dao[Book]):
 
-    def read_book_by_selection(self, selection_number: int) -> List[Book]:
+    def read_book_by_selection(self, selection_number: int) -> List[Book] | None:
         """
         Récupère les livres correspondant à une sélection
 
         :param selection_number: le numéro de la sélection dont on souhaite récupérer les livres
         :return: la liste des livres sélectionés
         """
-        with Dao.connection.cursor() as cursor:
-            sql = """
-                SELECT * FROM go_book
-                JOIN go_book_selection ON bs_id_book = bo_id_book
-                JOIN go_selection ON se_id_selection = bs_id_selection
-                JOIN go_author ON au_id_author = bo_id_author
-                JOIN go_publisher ON pu_id_publisher = bo_id_publisher
-                WHERE se_number = %s
-            """
-            cursor.execute(sql, (selection_number,))
-            records = cursor.fetchall()
+        try:
+            with Dao.connection.cursor() as cursor:
+                sql = """
+                    SELECT * FROM go_book
+                    JOIN go_book_selection ON bs_id_book = bo_id_book
+                    JOIN go_selection ON se_id_selection = bs_id_selection
+                    JOIN go_author ON au_id_author = bo_id_author
+                    JOIN go_publisher ON pu_id_publisher = bo_id_publisher
+                    WHERE se_number = %s
+                """
+                cursor.execute(sql, (selection_number,))
+                records = cursor.fetchall()
 
-            books = []
-            for record in records:
-                author = Author(record["au_first_name"], record["au_last_name"])
-                publisher = Publisher(record["pu_name"])
+                books = []
+                for record in records:
+                    author = Author(record["au_first_name"], record["au_last_name"])
+                    publisher = Publisher(record["pu_name"])
 
-                book = Book(record["bo_title"], author, publisher)
-                book.id = record["bo_id_book"]
-                book.summary = record["bo_summary"]
-                book.publication_date = record["bo_publication_date"]
-                book.number_of_pages = record["bo_number_of_pages"]
-                book.isbn = record["bo_isbn"]
-                book.price = record["bo_price"]
-                books.append(book)
+                    book = Book(record["bo_title"], author, publisher)
+                    book.id = record["bo_id_book"]
+                    book.summary = record["bo_summary"]
+                    book.publication_date = record["bo_publication_date"]
+                    book.number_of_pages = record["bo_number_of_pages"]
+                    book.isbn = record["bo_isbn"]
+                    book.price = record["bo_price"]
+                    books.append(book)
 
-            return books
+                return books
+
+        except pymysql.MySQLError as e:
+            print(f"Erreur SQL : {e}")
 
     def create_book_selection(self, selection_number: int, books: List[Book]) -> None:
         """
@@ -82,3 +86,26 @@ class BookDao(Dao[Book]):
         except pymysql.MySQLError as e:
             Dao.connection.rollback()
             print(f"Erreur SQL : {e}")
+
+    def update_book_number_of_votes(self, id_book: int, number_of_votes) -> None:
+        """
+        Met à jour le nombre de votes d'un livre
+
+        :param id_book: id du livre à modifier
+        :param number_of_votes: nombre de votes que le livre a reçus
+        """
+        try:
+            with Dao.connection.cursor() as cursor:
+                sql = """
+                    UPDATE go_book
+                    SET bo_number_of_votes = bo_number_of_votes + %s
+                    WHERE bo_id_book = %s
+                """
+                cursor.execute(sql, (number_of_votes, id_book))
+
+            Dao.connection.commit()
+
+        except pymysql.MySQLError as e:
+            Dao.connection.rollback()
+            print(f"Erreur SQL : {e}")
+
