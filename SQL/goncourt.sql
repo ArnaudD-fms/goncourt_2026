@@ -175,5 +175,18 @@ INSERT INTO `go_book` (`bo_title`, `bo_id_author`, `bo_id_publisher`,`bo_summary
     ("La guerre éternelle : souvenirs de Troie", 7, 7, NULL, NULL, NULL, NULL, NULL),
     ("Bataille au procès", 15, 11, NULL, NULL, NULL, NULL, NULL);
 
+INSERT INTO `go_main_character` (`mc_name`, `mc_id_book`) VALUES
+    ("Minotaure", 1),
+    ("narrator", 2),
+    ("Madame", 3),
+    ("Vieux Bouc", 3),
+    ("Enfant timide", 3),
+    ("narrator", 4),
+    ("famille Enoch", 4),
+    ("membres de la famille", 5),
+    ("Olivier", 6),
+    ("Jean Deichel", 7),
+    ("Antoinette Cosway", 8),
+    ("Edward Rochester", 8);
 
 COMMIT;
