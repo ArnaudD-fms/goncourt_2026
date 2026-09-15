@@ -11,7 +11,7 @@ from datetime import date
 @dataclass
 class Jury:
     """
-    Jury de l'académie Goncourt
+    Classe répresentant un jury de l'académie Goncourt
     * id                : clé primaire de l'entité en base
     * first_name        : prénom du jury
     * last_name         : nom du jury

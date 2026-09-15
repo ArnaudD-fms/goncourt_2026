@@ -9,6 +9,15 @@ from datetime import date
 
 @dataclass
 class Book:
+    """
+    Classe représentant un livre
+    * id                : clé primaire de l'entité en base
+    * title             : titre du livre
+    * summary           : résumé du livre
+    * number_of_pages   : nombre de pages du livre
+    * isbn              : numéro isbn du livre
+    * price             : prix du livre
+    """
     id: int | None = field(default=None, init=False)
     title: str
     summary: str

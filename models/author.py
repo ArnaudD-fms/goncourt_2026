@@ -9,6 +9,14 @@ from models.book import Book
 
 @dataclass
 class Author:
+    """
+    Classe représenant l'auteur d'un livre
+    * id            : clé primaire de l'entité en base
+    * first_name    : prénom de l'auteur
+    * last_name     : nom de l'auteur
+    * biography     : biographie de l'auteur
+    * book          : livre écrit par l'auteur
+    """
     id: int | None = field(default=None, init=False)
     first_name: str
     last_name: str
