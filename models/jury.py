@@ -6,7 +6,6 @@ Classe jury
 
 from dataclasses import dataclass, field
 from datetime import date
-from typing import Optional
 
 
 @dataclass
@@ -19,7 +18,7 @@ class Jury:
     * joining_date      : date d'entrée à l'académie Goncourt
     * is_president      : indique s'il s'agit du président du jury
     """
-    id: Optional[int] = field(default=None, init=False)
+    id: int | None = field(default=None, init=False)
     first_name: str
     last_name: str
     joining_date: date
