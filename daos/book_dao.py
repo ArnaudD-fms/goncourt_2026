@@ -22,6 +22,8 @@ class BookDao(Dao[Book]):
             with Dao.connection.cursor() as cursor:
                 # La requête récupère tous les livres liés à la sélection ainsi que les infos de l'auteur et l'éditeur.
                 # Elle récupère également la liste des personnages principaux via une fonction d'agrégation.
+                # TODO pour la review avec les formateurs :
+                #   Requête trop complexe ? dois-je mieux décomposer le besoin ?
                 sql = """
                     SELECT
                         go_book.*,
@@ -83,24 +85,21 @@ class BookDao(Dao[Book]):
                     SELECT se_id_selection FROM go_selection WHERE se_number = %s
                 """
                 cursor.execute(sql, (selection_number,))
-                id_selection = cursor.fetchone()
+                id_selection = cursor.fetchone()["se_id_selection"]
 
-                # Création la liste des association livre / sélection que l'on souhaite insérer en base
-                values = ", ".join(
-                    f"({book.id}, "
-                    f"{id_selection["se_id_selection"]})"
+                # Création de la liste des associations à ajouter en base
+                values = [
+                    (book.id, id_selection)
                     for book in books
-                )
+                ]
 
-                # Execution de la réquête en passant les valeurs préparées
-                sql = f"""
-                    INSERT INTO go_book_selection (bs_id_book, bs_id_selection) VALUES {values};
+                sql = """
+                    INSERT INTO go_book_selection
+                    (bs_id_book, bs_id_selection)
+                    VALUES (%s, %s)
                 """
-                cursor.execute(sql, values)
+                cursor.executemany(sql, values)
 
-            # TODO pour la review avec les formateurs :
-            #  est-ce une bonne approche ? (SELECT sur la table selection depuis le dao de book)
-            #  est-ce que ce code respecte les bonnes pratiques ?
             Dao.connection.commit()
 
         except pymysql.MySQLError as e:
