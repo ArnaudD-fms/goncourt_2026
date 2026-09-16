@@ -1,6 +1,5 @@
 from typing import ClassVar, List
 
-from daos import book_dao
 from daos.book_dao import BookDao
 from daos.jury_dao import JuryDao
 from models.book import Book
@@ -132,6 +131,11 @@ class Goncourt:
         """ Récupère et affiche les livres d'une sélection """
         selection = self.ask_selection()
         books = self.book_dao.read_book_by_selection(selection)
+
+        if len(books) == 0:
+            print("")
+            print(f"La sélection n° {selection} n'a pas encore eu lieu.")
+
         for book in books:
             print("")
             print(book)
@@ -194,7 +198,7 @@ class Goncourt:
         """
         Demande à l'utilisateur de choisir un livre parmi ceux couconrant dans la dernière sélection, et de choisir
         un nombre de votes à lui ajouter
-        
+
         """
         books = self.book_dao.read_book_by_selection(3)
 
