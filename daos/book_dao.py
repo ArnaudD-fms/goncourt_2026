@@ -5,6 +5,7 @@ import pymysql
 from daos.dao import Dao
 from models.author import Author
 from models.book import Book
+from models.main_character import MainCharacter
 from models.publisher import Publisher
 
 
@@ -19,22 +20,35 @@ class BookDao(Dao[Book]):
         """
         try:
             with Dao.connection.cursor() as cursor:
+                # La requête récupère tous les livres liés à la sélection ainsi que les infos de l'auteur et l'éditeur.
+                # Elle récupère également la liste des personnages principaux via une fonction d'agrégation.
                 sql = """
-                    SELECT * FROM go_book
+                    SELECT
+                        go_book.*,
+                        go_author.*,
+                        go_publisher.*,
+                        GROUP_CONCAT(mc_name SEPARATOR '|') AS main_characters
+                    FROM go_book
                     JOIN go_book_selection ON bs_id_book = bo_id_book
                     JOIN go_selection ON se_id_selection = bs_id_selection
                     JOIN go_author ON au_id_author = bo_id_author
                     JOIN go_publisher ON pu_id_publisher = bo_id_publisher
+                    LEFT JOIN go_main_character ON mc_id_book = bo_id_book
                     WHERE se_number = %s
+                    GROUP BY bo_id_book
                 """
                 cursor.execute(sql, (selection_number,))
                 records = cursor.fetchall()
 
                 books = []
                 for record in records:
+                    # Construction de l'objet book
+
+                    # Instanciation de l'auteur et de l'éditeur
                     author = Author(record["au_first_name"], record["au_last_name"])
                     publisher = Publisher(record["pu_name"])
 
+                    # Instanciation du livre
                     book = Book(record["bo_title"], author, publisher)
                     book.id = record["bo_id_book"]
                     book.summary = record["bo_summary"]
@@ -42,6 +56,12 @@ class BookDao(Dao[Book]):
                     book.number_of_pages = record["bo_number_of_pages"]
                     book.isbn = record["bo_isbn"]
                     book.price = record["bo_price"]
+
+                    # Instanciation des personnages principaux récupérés via la fonction d'agégation
+                    if record["main_characters"] is not None:
+                        book.main_characters = [MainCharacter(name) for name in record["main_characters"].split("|")]
+
+                    # Ajout du livre à la liste des livres
                     books.append(book)
 
                 return books

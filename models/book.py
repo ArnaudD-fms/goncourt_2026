@@ -5,7 +5,10 @@ Classe book
 """
 from dataclasses import dataclass, field
 from datetime import date
+from typing import List
+
 from models.author import Author
+from models.main_character import MainCharacter
 from models.publisher import Publisher
 from utils.date_utils import date_fr
 
@@ -32,6 +35,7 @@ class Book:
     isbn: str | None = field(default=None, init=False)
     price: float | None = field(default=None, init=False)
     number_of_votes: int | None = field(default=None, init=False)
+    main_characters: List[MainCharacter] = field(default=None, init=False)
 
     def __str__(self):
         s = f"\"{self.title}\" a été écrit pas {self.author} et publié par {self.publisher}"
@@ -48,6 +52,10 @@ class Book:
             additional_infos.append(f"Numéro ISBN :{self.isbn}")
         if self.price is not None:
             additional_infos.append(f"Prix : {self.price}")
+        if self.main_characters is not None:
+            label = "Personnages principaux" if len(self.main_characters) > 1 else "Personnage principal"
+            characters = ", ".join(character.name for character in self.main_characters)
+            additional_infos.append(f"{label} : {characters}")
 
         if additional_infos:
             s += "\n - Informations supplémentaires : \n - " + "\n - ".join(additional_infos)
