@@ -24,14 +24,15 @@ class Goncourt:
         """
         valid_input = False
         user_input = ""
+        invalid_input_message = f"Vous devez saison un nombre entre {min_choice} et {max_choice}"
         while not valid_input:
             user_input = input()
             if not user_input.isdigit():
-                print("saisie incorrect")
+                print(invalid_input_message)
                 continue
 
             if not min_choice <= int(user_input) <= max_choice:
-                print("saisie incorrect")
+                print(invalid_input_message)
                 continue
 
             valid_input = True
@@ -132,6 +133,8 @@ class Goncourt:
         selection = self.ask_selection()
         books = self.book_dao.read_book_by_selection(selection)
 
+        # TODO on pourrait aller vérifier la date dans l'objet Selection et la comparé à la
+        #   date du jour, afin de ne pas afficher les sélections qui n'ont pas encore eu lieu
         if len(books) == 0:
             print("")
             print(f"La sélection n° {selection} n'a pas encore eu lieu.")
@@ -146,6 +149,7 @@ class Goncourt:
         for jury in juries:
             print(jury)
 
+    # TODO redondance des méthode ask_selection et ask_selection_to_update > refcto nécessaire ?
     def ask_selection(self) -> int:
         """ Demande à l'utilisateur quelle sélection il souhaite afficher """
         print("")
@@ -159,6 +163,8 @@ class Goncourt:
         return self.get_valid_input(3, 2)
 
     def ask_book_to_add(self, books, books_to_add):
+        # TODO l'algo fonctionne MAIS il faudrait vérifier s'il n'y a pas une solution plus optimisée.
+        #   Il faudrait également vérifier les cas limite (pas eu le temps de tester en profondeur)
         """
         Affiche une liste de livre et demande à l'utilisateur de choisir le livre à ajouter à la liste des livres qui
         permettra de mettre à jour une sélection
@@ -195,6 +201,7 @@ class Goncourt:
             return False
 
     def ask_to_vote(self):
+        # TODO (cf méthode ask_book_to_add) > même constat
         """
         Demande à l'utilisateur de choisir un livre parmi ceux couconrant dans la dernière sélection, et de choisir
         un nombre de votes à lui ajouter

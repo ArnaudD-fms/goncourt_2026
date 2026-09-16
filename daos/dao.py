@@ -12,6 +12,7 @@ import pymysql.cursors
 
 @dataclass
 class Dao[T](ABC):
+    # TODO fichier d'environnement pour stocker les variables sensisbles à ajouter
     connection: ClassVar[pymysql.Connection] = \
         pymysql.connect(host='localhost',
                         user='goncourt',

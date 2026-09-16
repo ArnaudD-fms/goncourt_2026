@@ -43,9 +43,8 @@ class BookDao(Dao[Book]):
                 records = cursor.fetchall()
 
                 books = []
+                # Construction de l'objet book
                 for record in records:
-                    # Construction de l'objet book
-
                     # Instanciation de l'auteur et de l'éditeur
                     author = Author(record["au_first_name"], record["au_last_name"])
                     publisher = Publisher(record["pu_name"])
